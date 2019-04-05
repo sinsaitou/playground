@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.playground.card.Spot
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class SimpleItemRecyclerViewAdapter(
@@ -18,7 +17,6 @@ class SimpleItemRecyclerViewAdapter(
 ) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onBindCompleted(position: Int, spot: Spot)
         fun onItemClick(position: Int, spot: Spot, imageView: ImageView)
     }
 
@@ -36,16 +34,7 @@ class SimpleItemRecyclerViewAdapter(
                 .load(spot.url)
                 .noFade()
                 .error(android.R.color.darker_gray)
-                .into(holder.image, object: Callback {
-                    override fun onSuccess() {
-                        listener.onBindCompleted(position, spot)
-                    }
-
-                    override fun onError(e: Exception?) {
-                        listener.onBindCompleted(position, spot)
-                    }
-                })
-
+                .into(holder.image)
         holder.image.tag = "${spot.url}"
         ViewCompat.setTransitionName(holder.image, "${spot.url}")
 

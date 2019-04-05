@@ -15,12 +15,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.playground.SingleDetailActivity
-import com.playground.transitions.CustomTransitionSet
-import com.yuyakaido.android.cardstackview.*
-import io.reactivex.disposables.CompositeDisposable
 import com.playground.R
+import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
+import com.playground.transitions.CustomTransitionSet
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager
+import com.yuyakaido.android.cardstackview.CardStackListener
+import com.yuyakaido.android.cardstackview.Direction
+import com.yuyakaido.android.cardstackview.RewindAnimationSetting
+import com.yuyakaido.android.cardstackview.StackFrom
+import com.yuyakaido.android.cardstackview.SwipeAnimationSetting
+import com.yuyakaido.android.cardstackview.SwipeableMethod
+import io.reactivex.disposables.CompositeDisposable
 
 class CardActivity : AppCompatActivity(),
         CardStackListener,
@@ -68,7 +74,7 @@ class CardActivity : AppCompatActivity(),
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
                 val position = manager.topPosition
                 binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { imageView ->
-                    sharedElements?.let { elements ->
+                    sharedElements.let { elements ->
                         elements.clear()
                         elements[items[position].url] = imageView
                     }
@@ -87,7 +93,7 @@ class CardActivity : AppCompatActivity(),
                 Log.d("★", "CardActivity setExitSharedElementCallback# onMapSharedElements")
                 val position = manager.topPosition
                 binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { imageView ->
-                    sharedElements?.let { elements ->
+                    sharedElements.let { elements ->
                         elements.clear()
                         elements[items[position].url] = imageView
                     }
@@ -98,10 +104,8 @@ class CardActivity : AppCompatActivity(),
 
     private fun setResultPosition(position: Int) {
         val data = Intent()
-        val bundle = Bundle()
-        bundle.putInt(ARG_POSITION, position)
-        bundle.putInt(ARG_INIT_POSITION, initPosition)
-        data.putExtras(bundle)
+        data.putExtra(ARG_POSITION, position)
+        data.putExtra(ARG_INIT_POSITION, initPosition)
         setResult(Activity.RESULT_OK, data)
     }
 

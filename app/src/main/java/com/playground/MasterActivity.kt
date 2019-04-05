@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.playground.card.CardActivity
 import com.playground.card.Spot
@@ -40,7 +42,6 @@ class MasterActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         title = MasterActivity.javaClass.simpleName
-        supportPostponeEnterTransition()
         setupExitSharedElementCallback()
         setupRecyclerView()
     }
@@ -77,44 +78,25 @@ class MasterActivity : AppCompatActivity(),
     private fun setupRecyclerView() {
         binding.itemList.layoutManager = GridLayoutManager(this, 2)
         binding.itemList.adapter = SimpleItemRecyclerViewAdapter(createSpots(), this)
-
-//        disposables.add(binding.itemList.scrollEvents()
-//                .subscribe {
-//                    Log.d("★", "scrollEvents")
-//                    supportStartPostponedEnterTransition()
-//                })
-        binding.itemList.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                Log.d("★", "onScrolled")
-                supportStartPostponedEnterTransition()
-            }
-        })
     }
 
     override fun onActivityReenter(resultCode: Int, data: Intent) {
-
         val initPosition = data.getIntExtra(ARG_INIT_POSITION, -1)
         val position = data.getIntExtra(ARG_POSITION, -1)
         selectedPosition = position + initPosition
-
-        Log.d("★", "MasterActivity --- onActivityReenter initPosition[$initPosition] position[$position]")
         supportPostponeEnterTransition()
-            binding.itemList.addOnLayoutChangeListener(object: View.OnLayoutChangeListener {
-                override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-                    binding.itemList.removeOnLayoutChangeListener(this)
-                    Log.d("★", "onLayoutChange")
+        Log.d("★", "MasterActivity --- onActivityReenter initPosition[$initPosition] position[$position]")
 
-                    supportStartPostponedEnterTransition()
-//                    Handler().postDelayed(Runnable {
-//                        supportStartPostponedEnterTransition()}, 400L)
-                }
-            })
-            binding.itemList.scrollToPosition(selectedPosition)
+        binding.itemList.viewTreeObserver.addOnPreDrawListener(object :ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                binding.itemList.viewTreeObserver.removeOnPreDrawListener(this)
+                supportStartPostponedEnterTransition()
+                return true
+            }
+        })
+        binding.itemList.scrollToPosition(selectedPosition)
     }
 
-    override fun onBindCompleted(position: Int, spot: Spot) {
-        supportStartPostponedEnterTransition()
-    }
 
     override fun onItemClick(position: Int, spot: Spot, imageView: ImageView) {
 
@@ -136,7 +118,6 @@ class MasterActivity : AppCompatActivity(),
 
         ActivityCompat.startActivityForResult(this@MasterActivity, intent,
                 REQUEST_CODE_POSITION, options1.toBundle())
-
     }
 
     override fun onDestroy() {
