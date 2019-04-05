@@ -1,0 +1,56 @@
+# Android Studio, IntelliJ
+.gradle/
+.wercker/
+build/
+captures/
+gradlew.bat
+*.iml
+*.ipr
+*.iws
+
+.idea/*
+!.idea/codeStyles/*
+!.idea/icon.png
+!.idea/icon_dark.png
+
+# Built application files
+*.apk
+*report.txt
+
+# Files for the Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Mac
+.DS_Store
+
+
+# Vim
+*.swp
+
+
+# Emacs
+*~
+
+# Crashlytics
+com_crashlytics_export_strings.xml
+crashlytics-build.properties
+
+# remote build setting files
+fabfile.pyc
+remoteBuildSettings.json
+
+# remote build by mainframer
+# https://github.com/gojuno/mainframer
+.mainframer/
+mainframer.sh
