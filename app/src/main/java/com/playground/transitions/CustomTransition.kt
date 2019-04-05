@@ -15,7 +15,6 @@ class CustomTransition : Transition() {
     }
 
     override fun captureEndValues(transitionValues: TransitionValues) {
-        // end の値は使わないので何もしない
     }
 
     override fun createAnimator(sceneRoot: ViewGroup, startValues: TransitionValues?, endValues: TransitionValues): Animator? {
@@ -24,24 +23,25 @@ class CustomTransition : Transition() {
         if (startValues?.view == null || endValues.view == null) {
             return null
         }
+        Log.d("★", "startValues?.view[${startValues?.view.id}] endValues.view[${endValues.view.id}]")
 
-        val anim = ObjectAnimator.ofFloat(startValues.view, "radius", 8.0f)
+        val anim = ObjectAnimator.ofFloat(startValues.view, "radius", 50f)
         anim.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
-                super.onAnimationStart(animation)
-                Log.d("★", "createAnimator onAnimationStart")
+                Log.d("★", "createAnimator onAnimationStart [${startValues.view.id}][${startValues.view.tag}][${startValues.view.javaClass.simpleName}]")
                 val shape = GradientDrawable().apply {
-                    cornerRadius = 8f
+                    cornerRadius = 100f
                 }
                 startValues.view.background = shape
+                super.onAnimationStart(animation)
             }
             override fun onAnimationEnd(animation: Animator?) {
-                Log.d("★", "createAnimator onAnimationEnd")
-                super.onAnimationEnd(animation)
+                Log.d("★", "createAnimator onAnimationEnd [${endValues.view.id}][${endValues.view.tag}][${endValues.view.javaClass.simpleName}]")
                 val shape = GradientDrawable().apply {
-                    cornerRadius = 8f
+                    cornerRadius = 100f
                 }
                 endValues.view.background = shape
+                super.onAnimationEnd(animation)
             }
         })
         return anim
@@ -49,6 +49,6 @@ class CustomTransition : Transition() {
 
     companion object {
         // TransitionValues に追加するときのキーは パッケージ名:クラス名:プロパティ名
-        private const val PROP_NAME_VISIBILITY = "jp.developer.retia.activitytransitiontest.transitions:CustomTransition:visibility"
+        private const val PROP_NAME_VISIBILITY = "com.playground.transitions:CustomTransition:visibility"
     }
 }

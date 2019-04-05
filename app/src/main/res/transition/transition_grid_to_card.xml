@@ -20,12 +20,12 @@
     android:duration="375"
     android:interpolator="@android:interpolator/fast_out_slow_in"
     android:transitionOrdering="together">
-  <!--transition
-      class="jp.developer.retia.activitytransitiontest.transitions.ChangeOutlineRadius"
-      app:endRadius="8dp"
-      app:startRadius="8dp" /-->
   <changeClipBounds/>
   <changeTransform/>
   <changeBounds/>
   <changeImageTransform/>
+  <!--transition
+      class="com.playground.transitions.ChangeOutlineRadius"
+      app:endRadius="50dp"
+      app:startRadius="50dp" /-->
 </transitionSet>

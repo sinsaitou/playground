@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.playground.card.Spot
@@ -18,6 +17,7 @@ class SimpleItemRecyclerViewAdapter(
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, spot: Spot, imageView: ImageView)
+        //fun onItemClick(position: Int, spot: Spot, imageView: RoundedImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,7 +40,6 @@ class SimpleItemRecyclerViewAdapter(
 
         holder.itemView.setOnClickListener { v ->
             listener.onItemClick(position, spot, holder.image)
-            Toast.makeText(v.context, spot.name, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -60,6 +59,7 @@ class SimpleItemRecyclerViewAdapter(
         val name: TextView = view.findViewById(R.id.item_name)
         var city: TextView = view.findViewById(R.id.item_city)
         var image: ImageView = view.findViewById(R.id.item_image)
+        //var image: RoundedImageView = view.findViewById(R.id.item_image)
     }
 
 }

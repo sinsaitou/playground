@@ -1,11 +1,12 @@
 package com.playground.card
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.playground.R
@@ -34,6 +35,9 @@ class CardStackAdapter(
 
         holder.image.tag = "${spot.url}"
         ViewCompat.setTransitionName(holder.image, "${spot.url}")
+//        holder.container.tag = "${spot.url}"
+//        ViewCompat.setTransitionName(holder.container, "${spot.url}")
+        Log.d("★", "CardAdapter viewId[${holder.container.id}]")
 
         Picasso.get()
                 .load(spot.url)
@@ -50,7 +54,6 @@ class CardStackAdapter(
                 })
 
         holder.itemView.setOnClickListener { v ->
-            Toast.makeText(v.context, spot.name, Toast.LENGTH_SHORT).show()
             onViewHolderListener.onClickItem(position, spot, holder.image)
         }
     }
@@ -68,6 +71,7 @@ class CardStackAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val container: CardView = view.findViewById(R.id.card_container)
         val name: TextView = view.findViewById(R.id.card_name)
         var city: TextView = view.findViewById(R.id.card_city)
         var image: ImageView = view.findViewById(R.id.card_image)

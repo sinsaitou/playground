@@ -57,7 +57,7 @@ class MasterActivity : AppCompatActivity(),
                         .findViewHolderForAdapterPosition(selectedPosition)?.itemView?.let { itemView ->
                     itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
                         sharedElements?.let { elements ->
-                            Log.d("★", "＋＋＋＋＋[$imageView]")
+                            Log.d("★", "＋＋＋＋＋[${imageView.id}]")
                             elements.clear()
                             elements.put(spots[selectedPosition].url, imageView)
                         }
@@ -85,7 +85,6 @@ class MasterActivity : AppCompatActivity(),
         val position = data.getIntExtra(ARG_POSITION, -1)
         selectedPosition = position + initPosition
         supportPostponeEnterTransition()
-        Log.d("★", "MasterActivity --- onActivityReenter initPosition[$initPosition] position[$position]")
 
         binding.itemList.viewTreeObserver.addOnPreDrawListener(object :ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -100,7 +99,6 @@ class MasterActivity : AppCompatActivity(),
 
     override fun onItemClick(position: Int, spot: Spot, imageView: ImageView) {
 
-        Log.d("★", "onItemClick $position")
         selectedPosition = position
         val options1 = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this, imageView,

@@ -18,14 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.playground.R
 import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
-import com.playground.transitions.CustomTransitionSet
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager
-import com.yuyakaido.android.cardstackview.CardStackListener
-import com.yuyakaido.android.cardstackview.Direction
-import com.yuyakaido.android.cardstackview.RewindAnimationSetting
-import com.yuyakaido.android.cardstackview.StackFrom
-import com.yuyakaido.android.cardstackview.SwipeAnimationSetting
-import com.yuyakaido.android.cardstackview.SwipeableMethod
+import com.yuyakaido.android.cardstackview.*
 import io.reactivex.disposables.CompositeDisposable
 
 class CardActivity : AppCompatActivity(),
@@ -65,23 +58,38 @@ class CardActivity : AppCompatActivity(),
     }
 
     private fun setupEnterSharedElementCallback() {
-        window.sharedElementEnterTransition = CustomTransitionSet()
-//        val transition = TransitionInflater.from(this)
-//                .inflateTransition(R.transition.transition_grid_to_card)
-        //window.sharedElementEnterTransition = transition
+//        window.sharedElementEnterTransition = CustomTransitionSet()
+
+        val transition = TransitionInflater.from(this)
+                .inflateTransition(R.transition.transition_grid_to_card)
+//        transition.addListener(object: Transition.TransitionListener {
+//            override fun onTransitionStart(transition: Transition?) {
+//                val position = manager.topPosition
+//                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let {
+//                    val animator = ObjectAnimator.ofFloat(it, "radius", 50f)
+//                    animator.duration = 250
+//                    animator.start()
+//                }
+//            }
+//            override fun onTransitionEnd(transition: Transition?) = Unit
+//            override fun onTransitionResume(transition: Transition?) = Unit
+//            override fun onTransitionPause(transition: Transition?) = Unit
+//            override fun onTransitionCancel(transition: Transition?) = Unit
+//        })
+        window.sharedElementEnterTransition = transition
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
                 val position = manager.topPosition
-                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { imageView ->
-                    sharedElements.let { elements ->
+                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
+                    Log.d("★", "sharedElements view[${view.id}]")
+                    sharedElements?.let { elements ->
                         elements.clear()
-                        elements[items[position].url] = imageView
+                        elements[items[position].url] = view
                     }
                 }
             }
         })
-
     }
 
     private fun setupExitSharedElementCallback() {
@@ -92,10 +100,10 @@ class CardActivity : AppCompatActivity(),
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
                 Log.d("★", "CardActivity setExitSharedElementCallback# onMapSharedElements")
                 val position = manager.topPosition
-                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { imageView ->
-                    sharedElements.let { elements ->
+                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
+                    sharedElements?.let { elements ->
                         elements.clear()
-                        elements[items[position].url] = imageView
+                        elements[items[position].url] = view
                     }
                 }
             }
