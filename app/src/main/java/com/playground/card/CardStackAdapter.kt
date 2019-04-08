@@ -1,6 +1,5 @@
 package com.playground.card
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.makeramen.roundedimageview.RoundedTransformationBuilder
-import com.squareup.picasso.Cache
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -40,13 +37,13 @@ class CardStackAdapter(
         ViewCompat.setTransitionName(holder.image, "${spot.url}")
 //        holder.container.tag = "${spot.url}"
 //        ViewCompat.setTransitionName(holder.container, "${spot.url}")
-        Log.d("★", "CardAdapter viewId[${holder.container.id}]")
+        Log.d("★", "CardAdapter potision[$position] viewId[${holder.image.id}]")
 
-        val transformation = RoundedTransformationBuilder()
-                .cornerRadiusDp(8f)
-                .oval(false)
-                .build()
-
+//        val transformation = RoundedTransformationBuilder()
+//                .cornerRadiusDp(8f)
+//                .oval(false)
+//                .build()
+//
 //        Picasso.Builder(onViewHolderListener as Context).memoryCache(Cache.NONE)
 
         val p = Picasso.get()
@@ -55,8 +52,8 @@ class CardStackAdapter(
                 p.load(spot.url)
                 .noFade()
                   .fit()
-                  .centerCrop()
-                .transform(transformation)
+                  .centerInside()
+//                .transform(transformation)
                 .error(android.R.color.darker_gray)
                 .into(holder.image, object: Callback {
                     override fun onSuccess() {

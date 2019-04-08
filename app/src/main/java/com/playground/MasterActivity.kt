@@ -13,8 +13,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.playground.card.CardActivity
 import com.playground.card.Spot
 import com.playground.databinding.ActivityMainBinding
@@ -98,6 +96,7 @@ class MasterActivity : AppCompatActivity(),
 
 
     override fun onItemClick(position: Int, spot: Spot, imageView: ImageView) {
+    //override fun onItemClick(position: Int, spot: Spot, imageView: SquaredRoundedImageView) {
 
         selectedPosition = position
         val options1 = ActivityOptionsCompat.makeSceneTransitionAnimation(

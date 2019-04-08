@@ -65,10 +65,13 @@ class CardActivity : AppCompatActivity(),
 //        transition.addListener(object: Transition.TransitionListener {
 //            override fun onTransitionStart(transition: Transition?) {
 //                val position = manager.topPosition
-//                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let {
-//                    val animator = ObjectAnimator.ofFloat(it, "radius", 50f)
-//                    animator.duration = 250
-//                    animator.start()
+//                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
+//                    Log.d("★", "onTransitionStart")
+//                    if(view is ImageView) {
+//                        Log.d("★", "onTransitionStart ==>> ImageView")
+//                        view.setBackgroundResource(R.drawable.background_corner)
+//                        view.setImageResource(android.R.color.black)
+//                    }
 //                }
 //            }
 //            override fun onTransitionEnd(transition: Transition?) = Unit
@@ -84,10 +87,17 @@ class CardActivity : AppCompatActivity(),
                 binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
                     Log.d("★", "sharedElements view[${view.id}]")
                     sharedElements?.let { elements ->
+                        Log.d("★", "elements not null sharedElements view[${view.id}]")
                         elements.clear()
                         elements[items[position].url] = view
                     }
                 }
+            }
+
+            override fun onRejectSharedElements(rejectedSharedElements: MutableList<View>?) {
+                super.onRejectSharedElements(rejectedSharedElements)
+                Log.d("★", "onRejectSharedElements sharedElements[${rejectedSharedElements?.size ?: 0}]")
+
             }
         })
     }
@@ -143,7 +153,10 @@ class CardActivity : AppCompatActivity(),
     }
 
     override fun onBindCompleted(position: Int, spot: Spot) {
-        supportStartPostponedEnterTransition()
+        Log.d("★", "onBindCompleted $position")
+        if(position == 0) {
+            supportStartPostponedEnterTransition()
+        }
     }
 
     override fun onClickItem(position: Int, spot: Spot, imageView: ImageView) {
@@ -226,5 +239,6 @@ class CardActivity : AppCompatActivity(),
                 supportsChangeAnimations = false
             }
         }
+        Log.d("★", "CardActivity initialize end")
     }
 }
