@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.playground.R
+import com.makeramen.roundedimageview.RoundedTransformationBuilder
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+
 
 class CardStackAdapter(
         private var spots: List<Spot> = emptyList(),
@@ -25,7 +26,7 @@ class CardStackAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.item_spot, parent, false))
+        return ViewHolder(inflater.inflate(com.playground.R.layout.item_spot, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -39,9 +40,15 @@ class CardStackAdapter(
 //        ViewCompat.setTransitionName(holder.container, "${spot.url}")
         Log.d("★", "CardAdapter viewId[${holder.container.id}]")
 
+        val transformation = RoundedTransformationBuilder()
+                .cornerRadiusDp(8f)
+                .oval(false)
+                .build()
+
         Picasso.get()
                 .load(spot.url)
                 .noFade()
+                .transform(transformation)
                 .error(android.R.color.darker_gray)
                 .into(holder.image, object: Callback {
                     override fun onSuccess() {
@@ -52,6 +59,7 @@ class CardStackAdapter(
                         onViewHolderListener.onBindCompleted(position, spot)
                     }
                 })
+
 
         holder.itemView.setOnClickListener { v ->
             onViewHolderListener.onClickItem(position, spot, holder.image)
@@ -71,10 +79,10 @@ class CardStackAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val container: CardView = view.findViewById(R.id.card_container)
-        val name: TextView = view.findViewById(R.id.card_name)
-        var city: TextView = view.findViewById(R.id.card_city)
-        var image: ImageView = view.findViewById(R.id.card_image)
+        val container: CardView = view.findViewById(com.playground.R.id.card_container)
+        val name: TextView = view.findViewById(com.playground.R.id.card_name)
+        var city: TextView = view.findViewById(com.playground.R.id.card_city)
+        var image: ImageView = view.findViewById(com.playground.R.id.card_image)
     }
 
 }
