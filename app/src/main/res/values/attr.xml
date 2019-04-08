@@ -4,4 +4,8 @@
         <attr name="startRadius" format="dimension" />
         <attr name="endRadius" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="SquaredRoundedImageView">
+        <attr name="isSquared" format="boolean" />
+    </declare-styleable>
 </resources>

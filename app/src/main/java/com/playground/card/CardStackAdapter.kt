@@ -1,5 +1,6 @@
 package com.playground.card
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.makeramen.roundedimageview.RoundedTransformationBuilder
+import com.squareup.picasso.Cache
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -45,9 +47,15 @@ class CardStackAdapter(
                 .oval(false)
                 .build()
 
-        Picasso.get()
-                .load(spot.url)
+//        Picasso.Builder(onViewHolderListener as Context).memoryCache(Cache.NONE)
+
+        val p = Picasso.get()
+        p.isLoggingEnabled = true
+
+                p.load(spot.url)
                 .noFade()
+                  .fit()
+                  .centerCrop()
                 .transform(transformation)
                 .error(android.R.color.darker_gray)
                 .into(holder.image, object: Callback {

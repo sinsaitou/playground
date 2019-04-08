@@ -27,6 +27,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:riv_oval="true"
+            app:isSquared="true"
             />
 
         <!--ImageView
