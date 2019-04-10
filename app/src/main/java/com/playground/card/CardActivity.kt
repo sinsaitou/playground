@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.playground.R
 import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
+import com.playground.transitions.CustomTransitionSet
 import com.yuyakaido.android.cardstackview.*
 import io.reactivex.disposables.CompositeDisposable
 
@@ -58,10 +59,12 @@ class CardActivity : AppCompatActivity(),
     }
 
     private fun setupEnterSharedElementCallback() {
-//        window.sharedElementEnterTransition = CustomTransitionSet()
+        window.enterTransition = TransitionInflater.from(this)
+                .inflateTransition(R.transition.transition_card_exit)
+        window.sharedElementEnterTransition = CustomTransitionSet()
 
-        val transition = TransitionInflater.from(this)
-                .inflateTransition(R.transition.transition_grid_to_card)
+//        window.sharedElementEnterTransition = TransitionInflater.from(this)
+//                .inflateTransition(R.transition.transition_grid_to_card)
 //        transition.addListener(object: Transition.TransitionListener {
 //            override fun onTransitionStart(transition: Transition?) {
 //                val position = manager.topPosition
@@ -69,8 +72,14 @@ class CardActivity : AppCompatActivity(),
 //                    Log.d("★", "onTransitionStart")
 //                    if(view is ImageView) {
 //                        Log.d("★", "onTransitionStart ==>> ImageView")
-//                        view.setBackgroundResource(R.drawable.background_corner)
-//                        view.setImageResource(android.R.color.black)
+//                        Picasso.get()
+//                                .load(items[position].url)
+//                                .noFade()
+//                                .fit()
+//                                .centerInside()
+//                                .transform(RoundedCornersTransformation(8, 0))
+//                                .error(android.R.color.darker_gray)
+//                                .into(view)
 //                    }
 //                }
 //            }
@@ -79,7 +88,7 @@ class CardActivity : AppCompatActivity(),
 //            override fun onTransitionPause(transition: Transition?) = Unit
 //            override fun onTransitionCancel(transition: Transition?) = Unit
 //        })
-        window.sharedElementEnterTransition = transition
+//        window.sharedElementEnterTransition = transition
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {

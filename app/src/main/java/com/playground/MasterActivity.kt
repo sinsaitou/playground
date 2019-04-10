@@ -53,6 +53,7 @@ class MasterActivity : AppCompatActivity(),
                 Log.d("★", "MasterActivity setExitSharedElementCallback#onMapSharedElements $selectedPosition")
                 binding.itemList
                         .findViewHolderForAdapterPosition(selectedPosition)?.itemView?.let { itemView ->
+                    //itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
                     itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
                         sharedElements?.let { elements ->
                             Log.d("★", "＋＋＋＋＋[${imageView.id}]")
@@ -96,7 +97,7 @@ class MasterActivity : AppCompatActivity(),
 
 
     override fun onItemClick(position: Int, spot: Spot, imageView: ImageView) {
-    //override fun onItemClick(position: Int, spot: Spot, imageView: SquaredRoundedImageView) {
+    //override fun onItemClick(position: Int, spot: Spot, imageView: RoundedImageView) {
 
         selectedPosition = position
         val options1 = ActivityOptionsCompat.makeSceneTransitionAnimation(

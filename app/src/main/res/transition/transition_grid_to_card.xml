@@ -26,6 +26,6 @@
   <changeImageTransform/>
   <!--transition
       class="com.playground.transitions.ChangeOutlineRadius"
-      app:endRadius="50dp"
-      app:startRadius="50dp" /-->
+      app:endRadius="8dp"
+      app:startRadius="8dp" /-->
 </transitionSet>

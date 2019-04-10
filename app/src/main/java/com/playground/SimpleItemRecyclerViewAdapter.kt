@@ -17,7 +17,7 @@ class SimpleItemRecyclerViewAdapter(
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, spot: Spot, imageView: ImageView)
-        //fun onItemClick(position: Int, spot: Spot, imageView: SquaredRoundedImageView)
+        //fun onItemClick(position: Int, spot: Spot, imageView: RoundedImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,6 +37,7 @@ class SimpleItemRecyclerViewAdapter(
                 .centerCrop()
                 .error(android.R.color.darker_gray)
                 .into(holder.image)
+        //holder.image.loadImage(spot.url)
         holder.image.tag = "${spot.url}"
         ViewCompat.setTransitionName(holder.image, "${spot.url}")
 
@@ -60,7 +61,7 @@ class SimpleItemRecyclerViewAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.item_name)
         var city: TextView = view.findViewById(R.id.item_city)
-        //var image: SquaredRoundedImageView = view.findViewById(R.id.item_image)
+        //var image: RoundedImageView = view.findViewById(R.id.item_image)
         var image: ImageView = view.findViewById(R.id.item_image)
     }
 
