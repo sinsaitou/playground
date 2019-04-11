@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+
+            <RelativeLayout
+                android:id="@+id/button_container"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:clipChildren="false">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/skip_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/rewind_button"
+                    android:layout_toStartOf="@+id/rewind_button"
+                    android:src="@drawable/skip_red_24dp"
+                    app:backgroundTint="@android:color/white"
+                    app:fabSize="auto"
+                    app:rippleColor="#22ED7563"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/rewind_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/rewind_blue_24dp"
+                    app:backgroundTint="@android:color/white"
+                    app:fabSize="mini"
+                    app:rippleColor="#225BC9FA"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/like_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/rewind_button"
+                    android:layout_toEndOf="@+id/rewind_button"
+                    android:src="@drawable/like_green_24dp"
+                    app:backgroundTint="@android:color/white"
+                    app:fabSize="auto"
+                    app:rippleColor="#226FE2B3"/>
+
+            </RelativeLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <!--com.playground.view.CircleRectView
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:circleRadius="8dp"
+                    /-->
+                <com.playground.view.SquaredRoundedImageView
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="8dp"
+                    app:riv_oval="false"
+                    app:isSquared="false"
+                    />
+                <!--com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="8dp"
+                    app:riv_oval="false"
+                    app:isSquared="false"
+                    /-->
+
+                <!--ImageView
+                    android:id="@+id/card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/background_corner"
+                    /-->
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="16dp"
+                    android:background="@drawable/gradation_black">
+
+                    <TextView
+                        android:id="@+id/card_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"/>
+
+                    <TextView
+                        android:id="@+id/card_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

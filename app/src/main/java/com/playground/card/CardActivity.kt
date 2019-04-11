@@ -62,6 +62,7 @@ class CardActivity : AppCompatActivity(),
         window.enterTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_exit)
         window.sharedElementEnterTransition = CustomTransitionSet()
+//        window.sharedElementExitTransition = CustomTransitionSet().setDuration(1500)
 
 //        window.sharedElementEnterTransition = TransitionInflater.from(this)
 //                .inflateTransition(R.transition.transition_grid_to_card)
@@ -95,7 +96,7 @@ class CardActivity : AppCompatActivity(),
                 val position = manager.topPosition
                 binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
                     Log.d("★", "sharedElements view[${view.id}]")
-                    sharedElements?.let { elements ->
+                    sharedElements.let { elements ->
                         Log.d("★", "elements not null sharedElements view[${view.id}]")
                         elements.clear()
                         elements[items[position].url] = view
@@ -163,9 +164,13 @@ class CardActivity : AppCompatActivity(),
 
     override fun onBindCompleted(position: Int, spot: Spot) {
         Log.d("★", "onBindCompleted $position")
-        if(position == 0) {
+        if (position == 0) {
             supportStartPostponedEnterTransition()
         }
+    }
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
     }
 
     override fun onClickItem(position: Int, spot: Spot, imageView: ImageView) {

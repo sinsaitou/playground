@@ -47,6 +47,9 @@ class MasterActivity : AppCompatActivity(),
     private fun setupExitSharedElementCallback() {
         window.exitTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_grid_exit)
+//        window.sharedElementExitTransition = CustomTransitionSet2().apply {
+//            interpolator = LinearInterpolator()
+//        }
 
         setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>?, sharedElements: MutableMap<String, View?>?) {
@@ -75,7 +78,7 @@ class MasterActivity : AppCompatActivity(),
     }
 
     private fun setupRecyclerView() {
-        binding.itemList.layoutManager = GridLayoutManager(this, 2)
+        binding.itemList.layoutManager = GridLayoutManager(this, 3)
         binding.itemList.adapter = SimpleItemRecyclerViewAdapter(createSpots(), this)
     }
 
@@ -85,7 +88,7 @@ class MasterActivity : AppCompatActivity(),
         selectedPosition = position + initPosition
         supportPostponeEnterTransition()
 
-        binding.itemList.viewTreeObserver.addOnPreDrawListener(object :ViewTreeObserver.OnPreDrawListener {
+        binding.itemList.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 binding.itemList.viewTreeObserver.removeOnPreDrawListener(this)
                 supportStartPostponedEnterTransition()
@@ -105,6 +108,14 @@ class MasterActivity : AppCompatActivity(),
                 "${spot.url}")
 
         val cardList = spots.takeLast(spots.size - position)
+//        val intent = Intent(this, SingleCardActivity::class.java).apply {
+//            val bundle = Bundle().apply {
+//                putSerializable(ARG_ITEM_IDS, ArrayList(cardList))
+//                putExtra(ARG_POSITION, 0)
+//                putExtra(ARG_INIT_POSITION, position)
+//            }
+//            putExtras(bundle)
+//        }
         val intent = Intent(this, CardActivity::class.java).apply {
             val bundle = Bundle().apply {
                 putSerializable(ARG_ITEM_IDS, ArrayList(cardList))

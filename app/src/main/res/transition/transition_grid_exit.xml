@@ -16,9 +16,7 @@
   -->
 
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="375"
-    android:interpolator="@android:interpolator/fast_out_slow_in"
-    android:startDelay="25">
+    android:interpolator="@android:interpolator/fast_out_slow_in">
   <fade>
     <targets android:targetId="@id/item_image"/>
   </fade>

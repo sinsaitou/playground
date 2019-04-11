@@ -10,9 +10,9 @@ import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
-import com.playground.view.CircleRectView
+import com.playground.view.SquaredRoundedImageView
 
-class CustomTransition : Transition() {
+class CustomTransition2 : Transition() {
 
 //    private val RADIUS_PROPERTY = object : Property<SquaredRoundedImageView, Float>(Float::class.java, "radius") {
 //        override fun set(view: SquaredRoundedImageView, radius: Float) {
@@ -67,12 +67,12 @@ class CustomTransition : Transition() {
             return null
         }
 
-        if (startValues.view !is CircleRectView) {
+        if (startValues.view !is SquaredRoundedImageView) {
             return null
         }
 
         // not ViewAnimationUtils.createCircularReveal
-        val view = startValues.view as CircleRectView
+        val view = startValues.view as SquaredRoundedImageView
 
         val startRect = startValues.values[BOUNDS] as Rect
         val endRect = endValues.values[BOUNDS] as Rect
@@ -81,28 +81,28 @@ class CustomTransition : Transition() {
 
         //scale animator
         //animator = view.animator(startRect.height(), startRect.width(), endRect.height(), endRect.width(), 30f, 8f)
-        animator = view.animator(startRect, endRect)
+        animator = view.animator2(startRect, endRect)
 
-//        Log.i("★", "--------- start animation ------")
-//        Log.d("★", "start rect left = " + startRect.left)
-//        Log.d("★", "start rect top = " + startRect.top)
-//        Log.d("★", "end rect left = " + endRect.left)
-//        Log.d("★", "end rect top = " + endRect.top)
+        Log.i("★", "--------- start animation ------")
+        Log.d("★", "start rect left = " + startRect.left)
+        Log.d("★", "start rect top = " + startRect.top)
+        Log.d("★", "end rect left = " + endRect.left)
+        Log.d("★", "end rect top = " + endRect.top)
 
         //movement animators below
         //if some translation not performed fully, use it instead of start coordinate
         val startX = startRect.left + view.translationX
         val startY = startRect.top + view.translationY
 
-//        Log.w("★", "xFrom $startX")
-//        Log.w("★", "yFrom $startY")
+        Log.w("★", "xFrom $startX")
+        Log.w("★", "yFrom $startY")
 
         //somehow end rect returns needed value minus translation in case not finished transition available
         val moveXTo = endRect.left + Math.round(view.translationX)
         val moveYTo = endRect.top + Math.round(view.translationY)
 
-//        Log.w("★", "moveXTo $moveXTo")
-//        Log.w("★", "moveYTo $moveYTo")
+        Log.w("★", "moveXTo $moveXTo")
+        Log.w("★", "moveYTo $moveYTo")
 
         val moveXAnimator = ObjectAnimator.ofFloat(view, "x", startX, moveXTo.toFloat())
         val moveYAnimator = ObjectAnimator.ofFloat(view, "y", startY, moveYTo.toFloat())

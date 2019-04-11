@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.playground.card.CardActivity" />
+        <activity android:name="com.playground.card.SingleCardActivity" />
         <activity android:name="com.playground.SingleDetailActivity" />
     </application>
 

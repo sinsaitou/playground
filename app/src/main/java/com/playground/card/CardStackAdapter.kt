@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.playground.view.SquaredRoundedImageView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -88,8 +87,8 @@ class CardStackAdapter(
         val container: CardView = view.findViewById(com.playground.R.id.card_container)
         val name: TextView = view.findViewById(com.playground.R.id.card_name)
         var city: TextView = view.findViewById(com.playground.R.id.card_city)
-        //var image: ImageView = view.findViewById(com.playground.R.id.card_image)
-        var image: SquaredRoundedImageView = view.findViewById(com.playground.R.id.card_image)
+        var image: ImageView = view.findViewById(com.playground.R.id.card_image)
+        //var image: SquaredRoundedImageView = view.findViewById(com.playground.R.id.card_image)
     }
 
 }
