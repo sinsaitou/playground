@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- https://qiita.com/ntsk/items/dac92596742e18470a55 -->
-    <!--androidx.cardview.widget.CardView -->
-    <com.google.android.material.card.MaterialCardView
+    <!--com.google.android.material.card.MaterialCardView-->
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:shape="0"
             /-->
         <!--com.playground.view.SquaredRoundedImageView
             android:id="@+id/card_image"
@@ -125,5 +126,6 @@
             android:layout_height="match_parent">
         </FrameLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    <!--/com.google.android.material.card.MaterialCardView-->
+    </androidx.cardview.widget.CardView>
 </layout>

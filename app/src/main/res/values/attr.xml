@@ -14,7 +14,7 @@
     </declare-styleable>
 
     <declare-styleable name="CoverView">
-        <attr name="shape" format="string"/>
+        <attr name="shape" format="integer"/>
     </declare-styleable>
 
 

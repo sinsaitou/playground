@@ -8,8 +8,9 @@ import android.content.res.TypedArray
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import android.view.ViewAnimationUtils
+import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.widget.AppCompatImageView
 import com.playground.R
 
@@ -17,7 +18,7 @@ import com.playground.R
 class CircleRectView : AppCompatImageView {
 
     private var circleRadius: Int = 0
-    private var cornerRadius: Float = 0.toFloat()
+    var cornerRadius: Float = 0.toFloat()
     private val eps = 0.001f
 
     private var bitmapRect: RectF? = null
@@ -39,6 +40,7 @@ class CircleRectView : AppCompatImageView {
         if (a.hasValue(R.styleable.CircleRectView_circleRadius)) {
             circleRadius = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, 0)
             cornerRadius = circleRadius.toFloat()
+            Log.d("★", "*****>>>> circleRadius[$circleRadius]")
         }
 
         clipPath = Path()
@@ -46,54 +48,9 @@ class CircleRectView : AppCompatImageView {
         a.recycle()
     }
 
-//    fun animator(startHeight: Int, startWidth: Int, endHeight: Int, endWidth: Int, startRadius: Float, endRadius: Float): Animator {
-//        val animatorSet = AnimatorSet()
-//
-//        Log.d(CircleRectView::class.java.simpleName, "startHeight =" + startHeight
-//                + ", startWidth =" + startWidth
-//                + ", endHeight = " + endHeight
-//                + " endWidth =" + endWidth)
-//
-//        val heightAnimator = ValueAnimator.ofInt(startHeight, endHeight)
-//        val widthAnimator = ValueAnimator.ofInt(startWidth, endWidth)
-//
-//        heightAnimator.addUpdateListener { valueAnimator ->
-//            val `val` = valueAnimator.animatedValue as Int
-//            val layoutParams = layoutParams
-//            layoutParams.height = `val`
-//
-//            Log.d(CircleRectView::class.java.simpleName, "height updated =$`val`")
-//
-//            setLayoutParams(layoutParams)
-//            requestLayoutSupport()
-//        }
-//
-//        widthAnimator.addUpdateListener { valueAnimator ->
-//            val `val` = valueAnimator.animatedValue as Int
-//            val layoutParams = layoutParams
-//            layoutParams.width = `val`
-//
-//            setLayoutParams(layoutParams)
-//            requestLayoutSupport()
-//        }
-//
-//        val radiusAnimator = ValueAnimator.ofFloat(startRadius, endRadius)
-//
-//        radiusAnimator.interpolator = AccelerateInterpolator()
-//        radiusAnimator.addUpdateListener { animator -> cornerRadius = animator.animatedValue as Float }
-//
-//        animatorSet.playTogether(heightAnimator, widthAnimator, radiusAnimator)
-//
-//        return animatorSet
-//    }
 
     fun animator(startRect: Rect, endRect: Rect): Animator {
         val animatorSet = AnimatorSet()
-
-//        Log.d(CircleRectView::class.java.simpleName, "startHeight =" + startRect.height()
-//                + ", startWidth =" + startRect.width()
-//                + ", endHeight = " + endRect.height()
-//                + " endWidth =" + endRect.width())
 
         val heightAnimator = ValueAnimator.ofInt(startRect.height(), endRect.height())
         val widthAnimator = ValueAnimator.ofInt(startRect.width(), endRect.width())
@@ -102,8 +59,6 @@ class CircleRectView : AppCompatImageView {
             val `val` = valueAnimator.animatedValue as Int
             val layoutParams = layoutParams
             layoutParams.height = `val`
-
-//            Log.d(CircleRectView::class.java.simpleName, "height updated =$`val`")
 
             setLayoutParams(layoutParams)
             requestLayoutSupport()
@@ -119,28 +74,27 @@ class CircleRectView : AppCompatImageView {
         }
 
         val radiusAnimator = ValueAnimator.ofFloat(30f, 8f)
+        radiusAnimator.interpolator = AccelerateInterpolator()
 
-        //radiusAnimator.interpolator = AccelerateInterpolator()
         radiusAnimator.addUpdateListener { animator -> cornerRadius = animator.animatedValue as Float }
 
-        val circularReveal = if(startRect.width() < endRect.width()) {
-            val centerX = startRect.centerX()
-            val centerY = startRect.centerY()
-            val finalRadius = Math.hypot(endRect.width().toDouble(), endRect.height().toDouble()).toFloat()
+//        val circularReveal = if(startRect.width() < endRect.width()) {
+//            val centerX = startRect.centerX()
+//            val centerY = startRect.centerY()
+//            val finalRadius = Math.hypot(endRect.width().toDouble(), endRect.height().toDouble()).toFloat()
+//
+//            ViewAnimationUtils.createCircularReveal(this, centerX, centerY,
+//                    (startRect.width() / 2).toFloat(), finalRadius)
+//        } else {
+//            val centerX = endRect.centerX()
+//            val centerY = endRect.centerY()
+//            val initialRadius = Math.hypot(startRect.width().toDouble(), endRect.height().toDouble()).toFloat()
+//
+//            ViewAnimationUtils.createCircularReveal(this, centerX, centerY,
+//                    initialRadius, (endRect.width() / 2).toFloat())
+//        }
 
-            ViewAnimationUtils.createCircularReveal(this, centerX, centerY,
-                    (startRect.width() / 2).toFloat(), finalRadius)
-        } else {
-            val centerX = endRect.centerX()
-            val centerY = endRect.centerY()
-            val initialRadius = Math.hypot(startRect.width().toDouble(), endRect.height().toDouble()).toFloat()
-
-            ViewAnimationUtils.createCircularReveal(this, centerX, centerY,
-                    initialRadius, (endRect.width() / 2).toFloat())
-        }
-        circularReveal.duration = 500
-
-        animatorSet.playTogether(heightAnimator, widthAnimator, radiusAnimator)
+        animatorSet.playTogether(heightAnimator, widthAnimator)
 
         return animatorSet
     }

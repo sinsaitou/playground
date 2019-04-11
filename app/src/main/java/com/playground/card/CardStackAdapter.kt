@@ -39,21 +39,14 @@ class CardStackAdapter(
 //        ViewCompat.setTransitionName(holder.container, "${spot.url}")
         Log.d("★", "CardAdapter potision[$position] viewId[${holder.image.id}]")
 
-//        val transformation = RoundedTransformationBuilder()
-//                .cornerRadiusDp(8f)
-//                .oval(false)
-//                .build()
-
-//        Picasso.Builder(onViewHolderListener as Context).memoryCache(Cache.NONE)
-
         val p = Picasso.get()
-        p.isLoggingEnabled = true
+                p.isLoggingEnabled = true
+                p.setIndicatorsEnabled(true)
 
                 p.load(spot.url)
                 .noFade()
                   .fit()
-                  .centerInside()
-//                .transform(transformation)
+                  .centerCrop()
                 .error(android.R.color.darker_gray)
                 .into(holder.image, object: Callback {
                     override fun onSuccess() {
@@ -64,8 +57,6 @@ class CardStackAdapter(
                         onViewHolderListener.onBindCompleted(position, spot)
                     }
                 })
-
-
         holder.itemView.setOnClickListener { v ->
             onViewHolderListener.onClickItem(position, spot, holder.image)
         }

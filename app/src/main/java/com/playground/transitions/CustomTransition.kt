@@ -3,10 +3,12 @@ package com.playground.transitions
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.graphics.Rect
 import android.transition.Transition
 import android.transition.TransitionValues
 import android.util.Log
+import android.util.Property
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
@@ -14,16 +16,16 @@ import com.playground.view.CircleRectView
 
 class CustomTransition : Transition() {
 
-//    private val RADIUS_PROPERTY = object : Property<SquaredRoundedImageView, Float>(Float::class.java, "radius") {
-//        override fun set(view: SquaredRoundedImageView, radius: Float) {
-//            Log.d("★", "RADIUS_PROPERTY set[$radius]")
-//            view.cornerRadius = radius
-//        }
-//
-//        override fun get(view: SquaredRoundedImageView): Float {
-//            return view.cornerRadius
-//        }
-//    }
+    private val RADIUS_PROPERTY = object : Property<CircleRectView, Float>(Float::class.java, "radius") {
+        override fun set(view: CircleRectView, radius: Float) {
+            //Log.d("★", "RADIUS_PROPERTY set[$radius]")
+            view.cornerRadius = radius
+        }
+
+        override fun get(view: CircleRectView): Float {
+            return view.cornerRadius
+        }
+    }
 //
 //    private val ALPHA_PROPERTY = object : Property<SquaredRoundedImageView, Float>(Float::class.java, "alpha") {
 //        override fun set(view: SquaredRoundedImageView, alpha: Float) {
@@ -73,44 +75,51 @@ class CustomTransition : Transition() {
 
         // not ViewAnimationUtils.createCircularReveal
         val view = startValues.view as CircleRectView
+        Log.d("★", "view.cornerRadius[${view.cornerRadius}]")
 
         val startRect = startValues.values[BOUNDS] as Rect
         val endRect = endValues.values[BOUNDS] as Rect
 
         val animator: Animator
 
-        //scale animator
-        //animator = view.animator(startRect.height(), startRect.width(), endRect.height(), endRect.width(), 30f, 8f)
         animator = view.animator(startRect, endRect)
 
-//        Log.i("★", "--------- start animation ------")
-//        Log.d("★", "start rect left = " + startRect.left)
-//        Log.d("★", "start rect top = " + startRect.top)
-//        Log.d("★", "end rect left = " + endRect.left)
-//        Log.d("★", "end rect top = " + endRect.top)
-
-        //movement animators below
-        //if some translation not performed fully, use it instead of start coordinate
         val startX = startRect.left + view.translationX
         val startY = startRect.top + view.translationY
 
-//        Log.w("★", "xFrom $startX")
-//        Log.w("★", "yFrom $startY")
-
-        //somehow end rect returns needed value minus translation in case not finished transition available
         val moveXTo = endRect.left + Math.round(view.translationX)
         val moveYTo = endRect.top + Math.round(view.translationY)
-
-//        Log.w("★", "moveXTo $moveXTo")
-//        Log.w("★", "moveYTo $moveYTo")
 
         val moveXAnimator = ObjectAnimator.ofFloat(view, "x", startX, moveXTo.toFloat())
         val moveYAnimator = ObjectAnimator.ofFloat(view, "y", startY, moveYTo.toFloat())
 
         val animatorSet = AnimatorSet()
-        animatorSet.playTogether(animator, moveXAnimator, moveYAnimator)
+        val endImageView = endValues.view as CircleRectView
+        val w = endImageView.width
+        val h = endImageView.height
 
-        //prevent blinking when interrupt animation
+        val minRadius = Math.min(w, h) / 2f
+        val maxRadius = Math.hypot((w / 2f).toDouble(), (h / 2f).toDouble()).toFloat()
+        Log.d("★", "**>>>> Radius[$minRadius/$maxRadius] w/h[$w/$h]")
+
+        val radiusAnimator = if(startRect.width() < endRect.width()) {
+            endImageView.cornerRadius = minRadius
+            ObjectAnimator.ofFloat<CircleRectView>(endImageView, RADIUS_PROPERTY, minRadius, dpToPx(endImageView.context, 8f).toFloat())
+        } else {
+            endImageView.cornerRadius = dpToPx(endImageView.context, 8f).toFloat()
+            ObjectAnimator.ofFloat<CircleRectView>(endImageView, RADIUS_PROPERTY, dpToPx(endImageView.context, 8f).toFloat(), minRadius)
+        }
+//
+
+
+//        val centerX = startRect.centerX()
+//        val centerY = startRect.centerY()
+//        val finalRadius = Math.hypot(endRect.width().toDouble(), endRect.height().toDouble()).toFloat()
+//        val circulerAnimator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY,
+//                (startRect.width() / 2).toFloat(), finalRadius)
+        animatorSet.playTogether(animator)
+        animatorSet.playTogether(moveXAnimator, moveYAnimator, radiusAnimator)
+
         return NoPauseAnimator(animatorSet)
         // not ViewAnimationUtils.createCircularReveal
 
@@ -209,4 +218,10 @@ class CustomTransition : Transition() {
     private fun isReveal(startRect: Rect, endRect: Rect): Boolean {
         return startRect.width() < endRect.width()
     }
+
+    fun dpToPx(context: Context, dp: Float): Int {
+        val density = context.resources.displayMetrics.density
+        return (dp * density + 0.5f).toInt()
+    }
+
 }
