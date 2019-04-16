@@ -29,8 +29,8 @@ class CustomTransition() : Transition() {
 
     private var endCornerRadius: Float = 0f
 
-    constructor(startCornerRadius: Float) : this() {
-        this.endCornerRadius = startCornerRadius
+    constructor(endCornerRadius: Float) : this() {
+        this.endCornerRadius = endCornerRadius
     }
 
 //

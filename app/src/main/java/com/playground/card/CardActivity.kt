@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.transition.TransitionSet
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.playground.R
 import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
-import com.playground.transitions.CardTransitionSet
+import com.playground.transitions.CustomTransition
 import com.yuyakaido.android.cardstackview.*
 import io.reactivex.disposables.CompositeDisposable
 
@@ -61,7 +62,10 @@ class CardActivity : AppCompatActivity(),
     private fun setupEnterSharedElementCallback() {
         window.enterTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_exit)
-        window.sharedElementEnterTransition = CardTransitionSet()
+        window.sharedElementEnterTransition = TransitionSet().apply {
+            ordering = TransitionSet.ORDERING_TOGETHER
+            addTransition(CustomTransition(8f).addTarget(R.id.card_image))
+        }
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
@@ -86,7 +90,10 @@ class CardActivity : AppCompatActivity(),
     private fun setupExitSharedElementCallback() {
         window.exitTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_exit)
-        window.sharedElementExitTransition = CardTransitionSet()
+        window.sharedElementExitTransition = TransitionSet().apply {
+            ordering = TransitionSet.ORDERING_TOGETHER
+            addTransition(CustomTransition(0f).addTarget(R.id.card_image))
+        }
 
         setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
