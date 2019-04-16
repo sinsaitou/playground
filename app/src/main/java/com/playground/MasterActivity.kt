@@ -1,21 +1,16 @@
 package com.playground
 
-import android.app.SharedElementCallback
 import android.content.Intent
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import com.playground.card.CardActivity
 import com.playground.card.Spot
 import com.playground.databinding.ActivityMainBinding
+import com.playground.view.CustomPagerAdapter
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
@@ -39,43 +34,66 @@ class MasterActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        title = MasterActivity.javaClass.simpleName
-        setupExitSharedElementCallback()
-        setupRecyclerView()
+
+        binding.fragmentContent.visibility = View.GONE
+        binding.itemList.visibility = View.GONE
+        binding.viewPager.visibility = View.VISIBLE
+
+        //setFragment()
+
+        setViewPager()
+//        title = MasterActivity.javaClass.simpleName
+//        setupExitSharedElementCallback()
+//        setupRecyclerView()
     }
 
-    private fun setupExitSharedElementCallback() {
-        window.exitTransition = TransitionInflater.from(this)
-                .inflateTransition(R.transition.transition_grid_exit)
-//        window.sharedElementExitTransition = CustomTransitionSet2().apply {
+    private fun setFragment() {
+        val masterFragment = MasterFragment()
+        //masterFragment.sharedElementReturnTransition = CardTransitionSet()
+        supportFragmentManager.beginTransaction()
+                .replace(
+                        R.id.fragment_content,
+                        masterFragment,
+                        MasterFragment::class.java.simpleName)
+                .commit()
+    }
+
+    private fun setViewPager() {
+        binding.viewPager.adapter = CustomPagerAdapter(supportFragmentManager)
+    }
+
+//    private fun setupExitSharedElementCallback() {
+//        window.exitTransition = TransitionInflater.from(this)
+//                .inflateTransition(R.transition.transition_grid_exit)
+//        window.sharedElementExitTransition = CardTransitionSet().apply {
 //            interpolator = LinearInterpolator()
 //        }
-
-        setExitSharedElementCallback(object : SharedElementCallback() {
-            override fun onMapSharedElements(names: List<String>?, sharedElements: MutableMap<String, View?>?) {
-                Log.d("★", "MasterActivity setExitSharedElementCallback#onMapSharedElements $selectedPosition")
-                binding.itemList
-                        .findViewHolderForAdapterPosition(selectedPosition)?.itemView?.let { itemView ->
-                    //itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
-                    itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
-                        sharedElements?.let { elements ->
-                            Log.d("★", "＋＋＋＋＋[${imageView.id}]")
-                            elements.clear()
-                            elements.put(spots[selectedPosition].url, imageView)
-                        }
-                    }
-                }
-            }
-
-            override fun onRejectSharedElements(rejectedSharedElements: MutableList<View>?) {
-                super.onRejectSharedElements(rejectedSharedElements)
-                Log.d("★", "MasterActivity setExitSharedElementCallback#onRejectSharedElements")
-                rejectedSharedElements?.mapIndexed { index, view ->
-                    Log.d("★", "==>>> onRejectSharedElements[${index}][${view}]")
-                }
-            }
-        })
-    }
+//
+//        setExitSharedElementCallback(object : SharedElementCallback() {
+//            override fun onMapSharedElements(names: List<String>?, sharedElements: MutableMap<String, View?>?) {
+//                Log.d("★", "MasterActivity setExitSharedElementCallback#onMapSharedElements $selectedPosition")
+//                binding.itemList
+//                        .findViewHolderForAdapterPosition(selectedPosition)?.itemView?.let { itemView ->
+//                    //itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
+//                    itemView.findViewById<ImageView>(R.id.item_image)?.let { imageView ->
+//                        sharedElements?.let { elements ->
+//                            Log.d("★", "＋＋＋＋＋[${imageView.id}]")
+//                            elements.clear()
+//                            elements.put(spots[selectedPosition].url, imageView)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onRejectSharedElements(rejectedSharedElements: MutableList<View>?) {
+//                super.onRejectSharedElements(rejectedSharedElements)
+//                Log.d("★", "MasterActivity setExitSharedElementCallback#onRejectSharedElements")
+//                rejectedSharedElements?.mapIndexed { index, view ->
+//                    Log.d("★", "==>>> onRejectSharedElements[${index}][${view}]")
+//                }
+//            }
+//        })
+//    }
 
     private fun setupRecyclerView() {
         binding.itemList.layoutManager = GridLayoutManager(this, 3)
@@ -83,32 +101,43 @@ class MasterActivity : AppCompatActivity(),
     }
 
     override fun onActivityReenter(resultCode: Int, data: Intent) {
-        val initPosition = data.getIntExtra(ARG_INIT_POSITION, -1)
-        val position = data.getIntExtra(ARG_POSITION, -1)
-        selectedPosition = position + initPosition
+        Log.d("★", "onActivityReenter[$data]")
+
         supportPostponeEnterTransition()
 
-        binding.itemList.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-            override fun onPreDraw(): Boolean {
-                binding.itemList.viewTreeObserver.removeOnPreDrawListener(this)
-                supportStartPostponedEnterTransition()
-                return true
-            }
-        })
-        binding.itemList.scrollToPosition(selectedPosition)
+        val fragment = supportFragmentManager.fragments[binding.viewPager.currentItem] as? MasterFragment
+        Log.d("★", "onActivityReenter[$fragment]")
+
+//        val fragment = supportFragmentManager.findFragmentByTag(MasterFragment::class.java.simpleName) as? MasterFragment
+//        Log.d("★", "onActivityReenter[$fragment]")
+
+        fragment?.onReenter(data)
+//        val initPosition = data.getIntExtra(ARG_INIT_POSITION, -1)
+//        val position = data.getIntExtra(ARG_POSITION, -1)
+//        selectedPosition = position + initPosition
+//        supportPostponeEnterTransition()
+//
+//        binding.itemList.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+//            override fun onPreDraw(): Boolean {
+//                binding.itemList.viewTreeObserver.removeOnPreDrawListener(this)
+//                supportStartPostponedEnterTransition()
+//                return true
+//            }
+//        })
+//        binding.itemList.scrollToPosition(selectedPosition)
     }
 
 
     override fun onItemClick(position: Int, spot: Spot, imageView: ImageView) {
     //override fun onItemClick(position: Int, spot: Spot, imageView: RoundedImageView) {
 
-        selectedPosition = position
-        val options1 = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this, imageView,
-                "${spot.url}")
-
-        val cardList = spots.takeLast(spots.size - position)
-//        val intent = Intent(this, SingleCardActivity::class.java).apply {
+//        selectedPosition = position
+//        val options1 = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                this, imageView,
+//                "${spot.url}")
+//
+//        val cardList = spots.takeLast(spots.size - position)
+//        val intent = Intent(this, CardActivity::class.java).apply {
 //            val bundle = Bundle().apply {
 //                putSerializable(ARG_ITEM_IDS, ArrayList(cardList))
 //                putExtra(ARG_POSITION, 0)
@@ -116,17 +145,9 @@ class MasterActivity : AppCompatActivity(),
 //            }
 //            putExtras(bundle)
 //        }
-        val intent = Intent(this, CardActivity::class.java).apply {
-            val bundle = Bundle().apply {
-                putSerializable(ARG_ITEM_IDS, ArrayList(cardList))
-                putExtra(ARG_POSITION, 0)
-                putExtra(ARG_INIT_POSITION, position)
-            }
-            putExtras(bundle)
-        }
-
-        ActivityCompat.startActivityForResult(this@MasterActivity, intent,
-                REQUEST_CODE_POSITION, options1.toBundle())
+//
+//        ActivityCompat.startActivityForResult(this@MasterActivity, intent,
+//                REQUEST_CODE_POSITION, options1.toBundle())
     }
 
     override fun onDestroy() {

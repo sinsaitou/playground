@@ -112,10 +112,6 @@ class CircleRectView : AppCompatImageView {
 
     public override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        //This event-method provides the real dimensions of this custom view.
-
-        //        Log.d("size changed", "w = " + w + " h = " + h);
-
         bitmapRect = RectF(0f, 0f, w.toFloat(), h.toFloat())
     }
 

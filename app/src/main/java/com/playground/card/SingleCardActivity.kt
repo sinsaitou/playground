@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import com.playground.R
 import com.playground.databinding.ActivitySingleCardBinding
-import com.playground.transitions.CustomTransitionSet
+import com.playground.transitions.CardTransitionSet
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
@@ -54,11 +54,11 @@ class SingleCardActivity : AppCompatActivity() {
     private fun setupEnterSharedElementCallback() {
 //        window.enterTransition = TransitionInflater.from(this)
 //                .inflateTransition(R.transition.transition_card_exit)
-        window.sharedElementEnterTransition = CustomTransitionSet().apply {
+        window.sharedElementEnterTransition = CardTransitionSet().apply {
             duration = 800
             interpolator = LinearInterpolator()
         }
-//        window.sharedElementExitTransition = CustomTransitionSet().setDuration(1500)
+//        window.sharedElementExitTransition = CardTransitionSet().setDuration(1500)
 
 //        window.sharedElementEnterTransition = TransitionInflater.from(this)
 //                .inflateTransition(R.transition.transition_grid_to_card)

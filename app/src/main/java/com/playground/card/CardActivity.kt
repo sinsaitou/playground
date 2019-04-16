@@ -1,7 +1,6 @@
 package com.playground.card
 
 import android.app.Activity
-import android.app.SharedElementCallback
 import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -13,12 +12,13 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.app.SharedElementCallback
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.playground.R
 import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
-import com.playground.transitions.CustomTransitionSet
+import com.playground.transitions.CardTransitionSet
 import com.yuyakaido.android.cardstackview.*
 import io.reactivex.disposables.CompositeDisposable
 
@@ -61,43 +61,14 @@ class CardActivity : AppCompatActivity(),
     private fun setupEnterSharedElementCallback() {
         window.enterTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_exit)
-        window.sharedElementEnterTransition = CustomTransitionSet()
-//        window.sharedElementExitTransition = CustomTransitionSet().setDuration(1500)
-
-//        window.sharedElementEnterTransition = TransitionInflater.from(this)
-//                .inflateTransition(R.transition.transition_grid_to_card)
-//        transition.addListener(object: Transition.TransitionListener {
-//            override fun onTransitionStart(transition: Transition?) {
-//                val position = manager.topPosition
-//                binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
-//                    Log.d("★", "onTransitionStart")
-//                    if(view is ImageView) {
-//                        Log.d("★", "onTransitionStart ==>> ImageView")
-//                        Picasso.get()
-//                                .load(items[position].url)
-//                                .noFade()
-//                                .fit()
-//                                .centerInside()
-//                                .transform(RoundedCornersTransformation(8, 0))
-//                                .error(android.R.color.darker_gray)
-//                                .into(view)
-//                    }
-//                }
-//            }
-//            override fun onTransitionEnd(transition: Transition?) = Unit
-//            override fun onTransitionResume(transition: Transition?) = Unit
-//            override fun onTransitionPause(transition: Transition?) = Unit
-//            override fun onTransitionCancel(transition: Transition?) = Unit
-//        })
-//        window.sharedElementEnterTransition = transition
+        window.sharedElementEnterTransition = CardTransitionSet()
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
                 val position = manager.topPosition
                 binding.cardStackView.findViewWithTag<View>(items[position].url)?.let { view ->
-                    Log.d("★", "sharedElements view[${view.id}]")
+                    Log.d("★", "CardActivity setEnterSharedElementCallback sharedElements view[${view.id}] tag[${view.tag}]")
                     sharedElements.let { elements ->
-                        Log.d("★", "elements not null sharedElements view[${view.id}]")
                         elements.clear()
                         elements[items[position].url] = view
                     }
@@ -106,7 +77,7 @@ class CardActivity : AppCompatActivity(),
 
             override fun onRejectSharedElements(rejectedSharedElements: MutableList<View>?) {
                 super.onRejectSharedElements(rejectedSharedElements)
-                Log.d("★", "onRejectSharedElements sharedElements[${rejectedSharedElements?.size ?: 0}]")
+                Log.d("★", "CardActivity onRejectSharedElements sharedElements[${rejectedSharedElements?.size ?: 0}]")
 
             }
         })
@@ -115,6 +86,7 @@ class CardActivity : AppCompatActivity(),
     private fun setupExitSharedElementCallback() {
         window.exitTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_exit)
+        window.sharedElementExitTransition = CardTransitionSet()
 
         setExitSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
@@ -163,9 +135,9 @@ class CardActivity : AppCompatActivity(),
     }
 
     override fun onBindCompleted(position: Int, spot: Spot) {
-        Log.d("★", "onBindCompleted $position")
         if (position == 0) {
             supportStartPostponedEnterTransition()
+            Log.d("★", "onBindCompleted $position")
         }
     }
 

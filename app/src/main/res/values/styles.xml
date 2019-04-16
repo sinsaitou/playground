@@ -24,9 +24,9 @@
         <item name="android:windowSharedElementReenterTransition">
             @transition/list_shared_element_reenter_transition
         </item>
-    </style>
+    </style-->
 
-    <style name="AppTheme.Detail">
+    <!--style name="AppTheme.Detail">
         <item name="android:windowEnterTransition">
             @transition/detail_content_enter_transition
         </item>

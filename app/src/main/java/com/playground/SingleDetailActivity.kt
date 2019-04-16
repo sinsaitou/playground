@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import com.playground.card.Spot
 import com.playground.databinding.ActivitySingleDetailBinding
+import com.playground.transitions.DetailTransitionSet
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -44,9 +45,9 @@ class SingleDetailActivity : AppCompatActivity() {
     }
 
     private fun setupEnterSharedElementCallback() {
-        val transition = TransitionInflater.from(this)
+        window.enterTransition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_card_to_detail)
-        window.sharedElementEnterTransition = transition
+        window.sharedElementEnterTransition = DetailTransitionSet()
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
             override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {

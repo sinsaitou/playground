@@ -17,15 +17,13 @@
 
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:duration="375"
     android:interpolator="@android:interpolator/fast_out_slow_in"
     android:transitionOrdering="together">
   <changeClipBounds/>
   <changeTransform/>
   <changeBounds/>
   <changeImageTransform/>
-  <!--transition
-      class="com.playground.transitions.ChangeOutlineRadius"
-      app:endRadius="8dp"
-      app:startRadius="8dp" /-->
+    <!--fade>
+        <targets android:targetId="@id/card_image"/>
+    </fade-->
 </transitionSet>

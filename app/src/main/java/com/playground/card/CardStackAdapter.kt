@@ -37,7 +37,7 @@ class CardStackAdapter(
         ViewCompat.setTransitionName(holder.image, "${spot.url}")
 //        holder.container.tag = "${spot.url}"
 //        ViewCompat.setTransitionName(holder.container, "${spot.url}")
-        Log.d("★", "CardAdapter potision[$position] viewId[${holder.image.id}]")
+        Log.d("★", "CardAdapter potision[$position] viewId[${holder.image.id}] tag[${spot.url}]")
 
         val p = Picasso.get()
                 p.isLoggingEnabled = true
