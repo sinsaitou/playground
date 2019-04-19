@@ -19,6 +19,7 @@ import com.playground.R
 import com.playground.SingleDetailActivity
 import com.playground.databinding.ActivityCardBinding
 import com.playground.transitions.CustomTransition
+import com.playground.transitions.CustomTransition3
 import com.yuyakaido.android.cardstackview.*
 import io.reactivex.disposables.CompositeDisposable
 
@@ -63,8 +64,7 @@ class CardActivity : AppCompatActivity(),
                 .inflateTransition(R.transition.transition_card_exit)
         window.sharedElementEnterTransition = TransitionSet().apply {
             ordering = TransitionSet.ORDERING_TOGETHER
-            //addTransition(CustomTransition2(12f, 12f, 0f, 0f).addTarget(R.id.card_image))
-            addTransition(CustomTransition(12f).addTarget(R.id.card_image))
+            addTransition(CustomTransition(12f, 12f, 0f, 0f).addTarget(R.id.card_image))
             addTransition(ChangeBounds().addTarget(R.id.card_image))
             addTransition(ChangeTransform().addTarget(R.id.card_image))
             addTransition(ChangeClipBounds().addTarget(R.id.card_image))
@@ -96,7 +96,7 @@ class CardActivity : AppCompatActivity(),
                 .inflateTransition(R.transition.transition_card_exit)
         window.sharedElementExitTransition = TransitionSet().apply {
             ordering = TransitionSet.ORDERING_TOGETHER
-            //addTransition(CustomTransition(0f).addTarget(R.id.card_image))
+            addTransition(CustomTransition3(0f, 0f, 0f, 0f, 12f, 12f, 0f, 0f).addTarget(R.id.card_image))
             addTransition(ChangeBounds().addTarget(R.id.card_image))
             addTransition(ChangeTransform().addTarget(R.id.card_image))
             addTransition(ChangeClipBounds().addTarget(R.id.card_image))
@@ -157,7 +157,8 @@ class CardActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        supportFinishAfterTransition()
+        finishAfterTransition()
+        super.onBackPressed()
     }
 
     override fun onClickItem(position: Int, spot: Spot, imageView: ImageView) {

@@ -11,11 +11,10 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Half.toFloat
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import com.playground.R
+
 
 class CircleRectView : AppCompatImageView {
 
@@ -34,7 +33,7 @@ class CircleRectView : AppCompatImageView {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : this(context, attrs, defStyleAttr, 0)
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr) {
-        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.CircleRectView, defStyleAttr, defStyleRes)
+        val a = context.theme.obtainStyledAttributes(attrs, com.playground.R.styleable.CircleRectView, defStyleAttr, defStyleRes)
         init(a)
     }
 
@@ -43,11 +42,11 @@ class CircleRectView : AppCompatImageView {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         }
 
-        cornerRadius = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, -1).toFloat()
-        cornerRadiusTopLeft = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, 0).toFloat()
-        cornerRadiusTopRight = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, 0).toFloat()
-        cornerRadiusBottomRight = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, 0).toFloat()
-        cornerRadiusBottomLeft = a.getDimensionPixelSize(R.styleable.CircleRectView_circleRadius, 0).toFloat()
+        cornerRadius = a.getDimensionPixelSize(com.playground.R.styleable.CircleRectView_circleRadius, -1).toFloat()
+        cornerRadiusTopLeft = a.getDimensionPixelSize(com.playground.R.styleable.CircleRectView_circleRadiusTopLeft, 0).toFloat()
+        cornerRadiusTopRight = a.getDimensionPixelSize(com.playground.R.styleable.CircleRectView_circleRadiusTopRight, 0).toFloat()
+        cornerRadiusBottomRight = a.getDimensionPixelSize(com.playground.R.styleable.CircleRectView_circleRadiusBottomRight, 0).toFloat()
+        cornerRadiusBottomLeft = a.getDimensionPixelSize(com.playground.R.styleable.CircleRectView_circleRadiusBottomLeft, 0).toFloat()
 
         if (cornerRadius >= 0f) {
             cornerRadiusTopLeft = cornerRadius
@@ -58,8 +57,8 @@ class CircleRectView : AppCompatImageView {
             cornerRadius = 0f
         }
 
-        isSquared = a.getBoolean(R.styleable.CircleRectView_circleIsSquared, false)
-        isOval = a.getBoolean(R.styleable.CircleRectView_isOval, false)
+        isSquared = a.getBoolean(com.playground.R.styleable.CircleRectView_circleIsSquared, false)
+        isOval = a.getBoolean(com.playground.R.styleable.CircleRectView_isOval, false)
         clipPath = Path()
 
         Log.d("★", "** CircleRectView init cornerRadiusTopLeft[" + cornerRadiusTopLeft + "] cornerRadiusTopRight[" + cornerRadiusTopRight + "] cornerRadiusBottomRight[" + cornerRadiusBottomRight + "] cornerRadiusBottomLeft[" + cornerRadiusBottomLeft + "] isSquared[" + isSquared +"] isOval[" + isOval + "]")
@@ -128,6 +127,7 @@ class CircleRectView : AppCompatImageView {
         if (drawable == null || clipPath == null) {
             return
         }
+
         if (width == 0 || height == 0) {
             return
         }
@@ -141,7 +141,8 @@ class CircleRectView : AppCompatImageView {
         } else {
             //val rect = RectF(0f, 0f, height.toFloat() / 2 , width.toFloat() / 2)
             //clipPath!!.addRoundRect(rect, cornerRadius, cornerRadius, Path.Direction.CW)
-//            clipPath!!.addRoundRect(bitmapRect, cornerRadius, cornerRadius, Path.Direction.CW)
+            //clipPath!!.addRoundRect(bitmapRect, cornerRadius, cornerRadius, Path.Direction.CW)
+            //val bmp = (drawable as BitmapDrawable).bitmap
 
             clipPath!!.addRoundRect(bitmapRect,
                     floatArrayOf(cornerRadiusTopLeft, cornerRadiusTopLeft,

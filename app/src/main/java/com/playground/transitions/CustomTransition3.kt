@@ -14,7 +14,13 @@ import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import com.playground.view.CircleRectView
 
-class CustomTransition : Transition {
+class CustomTransition3 : Transition {
+
+    private var startCornerRadius: Float = 0f
+    private var startCornerRadiusTopLeft: Float = 0f
+    private var startCornerRadiusTopRight: Float = 0f
+    private var startCornerRadiusBottomRight: Float = 0f
+    private var startCornerRadiusBottomLeft: Float = 0f
 
     private var endCornerRadius: Float = 0f
     private var endCornerRadiusTopLeft: Float = 0f
@@ -22,15 +28,29 @@ class CustomTransition : Transition {
     private var endCornerRadiusBottomRight: Float = 0f
     private var endCornerRadiusBottomLeft: Float = 0f
 
-    constructor(endCornerRadius: Float) {
+    constructor(startCornerRadius: Float, endCornerRadius: Float) {
+        this.startCornerRadius = startCornerRadius
         this.endCornerRadius = endCornerRadius
     }
 
-    constructor(endCornerRadiusTopLeft: Float, endCornerRadiusTopRight: Float, endCornerRadiusBottomLeft: Float, endCornerRadiusBottomRight: Float) {
+    constructor(
+            startCornerRadiusTopLeft: Float,
+            startCornerRadiusTopRight: Float,
+            startCornerRadiusBottomLeft: Float,
+            startCornerRadiusBottomRight: Float,
+            endCornerRadiusTopLeft: Float,
+            endCornerRadiusTopRight: Float,
+            endCornerRadiusBottomLeft: Float,
+            endCornerRadiusBottomRight: Float) {
+        this.startCornerRadiusTopLeft = startCornerRadiusTopLeft
+        this.startCornerRadiusTopRight = startCornerRadiusTopRight
+        this.startCornerRadiusBottomLeft = startCornerRadiusBottomLeft
+        this.startCornerRadiusBottomRight = startCornerRadiusBottomRight
         this.endCornerRadiusTopLeft = endCornerRadiusTopLeft
         this.endCornerRadiusTopRight = endCornerRadiusTopRight
         this.endCornerRadiusBottomLeft = endCornerRadiusBottomLeft
         this.endCornerRadiusBottomRight = endCornerRadiusBottomRight
+        Log.d("★", "CustomTransition3 constructor")
     }
 
     private val RADIUS_PROPERTY = object : Property<CircleRectView, Float>(Float::class.java, "radius") {
@@ -115,7 +135,7 @@ class CustomTransition : Transition {
 //        }
 //    }
 
-    private val BOUNDS = "com.playground.transitions.CustomTransition:viewBounds"
+    private val BOUNDS = "com.playground.transitions.CustomTransition3:viewBounds"
     private val PROPS = arrayOf(BOUNDS)
 
 
@@ -134,15 +154,17 @@ class CustomTransition : Transition {
     }
 
     override fun captureStartValues(transitionValues: TransitionValues) {
+        Log.d("★", "CustomTransition3 captureStartValues")
         captureValues(transitionValues)
     }
 
     override fun captureEndValues(transitionValues: TransitionValues) {
+        Log.d("★", "CustomTransition3 captureEndValues")
         captureValues(transitionValues)
     }
 
     override fun createAnimator(sceneRoot: ViewGroup, startValues: TransitionValues?, endValues: TransitionValues?): Animator? {
-        Log.d("★", "======>>>>> createAnimator start")
+        Log.d("★", "======>>>>> CustomTransition3 createAnimator start")
         if (startValues == null || endValues == null) {
             return null
         }
@@ -174,27 +196,27 @@ class CustomTransition : Transition {
 
         val minRadius = Math.min(w, h) / 2f
         val maxRadius = Math.hypot((w / 2f).toDouble(), (h / 2f).toDouble()).toFloat()
-        Log.d("★", "**>>>> Radius[$minRadius/$maxRadius] w/h[$w/$h]")
+        Log.d("★", "**>>>> Radius[$minRadius/$maxRadius/${view.cornerRadius}] w/h[$w/$h]")
 
 //        val radiusAnimator = if(startRect.width() < endRect.width()) {
-//            endView.cornerRadius = minRadius
-//            ObjectAnimator.ofFloat<CircleRectView>(endView, RADIUS_PROPERTY, minRadius, dpToPx(endView.context, endCornerRadius).toFloat())
+//            endView.cornerRadius = dpToPx(endView.context, 8f).toFloat()
+//            ObjectAnimator.ofFloat<CircleRectView>(endView, RADIUS_PROPERTY, dpToPx(endView.context, 8f).toFloat(), dpToPx(endView.context, endCornerRadius).toFloat())
 //        } else {
 //            endView.cornerRadius = dpToPx(endView.context, endCornerRadius).toFloat()
-//            ObjectAnimator.ofFloat<CircleRectView>(endView, RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadius).toFloat(), minRadius)
+//            ObjectAnimator.ofFloat<CircleRectView>(endView, RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadius).toFloat(), dpToPx(endView.context, 8f).toFloat())
 //        }
 
         val radiusAnimator = if(startRect.width() < endRect.width()) {
-            endView.cornerRadiusTopLeft = minRadius
-            endView.cornerRadiusTopRight = minRadius
-            endView.cornerRadiusBottomRight = minRadius
-            endView.cornerRadiusBottomLeft = minRadius
+            endView.cornerRadiusTopLeft = dpToPx(endView.context, startCornerRadiusTopLeft).toFloat()
+            endView.cornerRadiusTopRight = dpToPx(endView.context, startCornerRadiusTopRight).toFloat()
+            endView.cornerRadiusBottomRight = dpToPx(endView.context, startCornerRadiusBottomRight).toFloat()
+            endView.cornerRadiusBottomLeft = dpToPx(endView.context, startCornerRadiusBottomLeft).toFloat()
             val radiusAnimatorSet = AnimatorSet().apply {
                 playTogether(
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_LEFT_RADIUS_PROPERTY, minRadius, dpToPx(endView.context, endCornerRadiusTopLeft).toFloat()),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_RIGHT_RADIUS_PROPERTY, minRadius, dpToPx(endView.context, endCornerRadiusTopRight).toFloat()),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_RIGHT_RADIUS_PROPERTY, minRadius, dpToPx(endView.context, endCornerRadiusBottomRight).toFloat()),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_LEFT_RADIUS_PROPERTY, minRadius, dpToPx(endView.context, endCornerRadiusBottomLeft).toFloat())
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, startCornerRadiusTopLeft).toFloat(), dpToPx(endView.context, endCornerRadiusTopLeft).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, startCornerRadiusTopRight).toFloat(), dpToPx(endView.context, endCornerRadiusTopRight).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, startCornerRadiusBottomRight).toFloat(), dpToPx(endView.context, endCornerRadiusBottomRight).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, startCornerRadiusBottomLeft).toFloat(), dpToPx(endView.context, endCornerRadiusBottomRight).toFloat())
                 )
             }
             radiusAnimatorSet
@@ -205,10 +227,10 @@ class CustomTransition : Transition {
             endView.cornerRadiusBottomLeft = dpToPx(endView.context, endCornerRadiusBottomLeft).toFloat()
             val radiusAnimatorSet = AnimatorSet().apply {
                 playTogether(
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusTopLeft).toFloat(), minRadius),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusTopRight).toFloat(), minRadius),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusBottomRight).toFloat(), minRadius),
-                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusBottomLeft).toFloat(), minRadius)
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusTopLeft).toFloat(), dpToPx(endView.context, startCornerRadiusTopLeft).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, TOP_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusTopRight).toFloat(), dpToPx(endView.context, startCornerRadiusTopRight).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_RIGHT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusBottomRight).toFloat(), dpToPx(endView.context, startCornerRadiusBottomRight).toFloat()),
+                        ObjectAnimator.ofFloat<CircleRectView>(endView, BOTTOM_LEFT_RADIUS_PROPERTY, dpToPx(endView.context, endCornerRadiusBottomLeft).toFloat(), dpToPx(endView.context, startCornerRadiusBottomLeft).toFloat())
                 )
             }
             radiusAnimatorSet

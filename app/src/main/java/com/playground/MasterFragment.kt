@@ -131,6 +131,7 @@ class MasterFragment : Fragment(),
         }
 
         startActivityForResult(intent, REQUEST_CODE_POSITION, options1.toBundle())
+//        startActivityForResult(intent, REQUEST_CODE_POSITION)
 
         //binding.itemList.adapter = SimpleItemRecyclerViewAdapter(createSpots(), this)
 

@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:circleRadius="12dp"
+                app:circleRadiusTopLeft="12dp"
+                app:circleRadiusTopRight="12dp"
                 />
 
             <!--com.playground.view.SquaredRoundedImageView

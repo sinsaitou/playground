@@ -42,7 +42,7 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center"
             app:isOval="true"
-            app:circleIsSquared="true" />
+            app:circleIsSquared="true"/>
 
         <!--com.playground.view.CoverView
             android:id="@+id/item_image"
