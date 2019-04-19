@@ -3,8 +3,7 @@ package com.playground.card
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.transition.TransitionInflater
-import android.transition.TransitionSet
+import android.transition.*
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -64,7 +63,12 @@ class CardActivity : AppCompatActivity(),
                 .inflateTransition(R.transition.transition_card_exit)
         window.sharedElementEnterTransition = TransitionSet().apply {
             ordering = TransitionSet.ORDERING_TOGETHER
-            addTransition(CustomTransition(8f).addTarget(R.id.card_image))
+            //addTransition(CustomTransition2(12f, 12f, 0f, 0f).addTarget(R.id.card_image))
+            addTransition(CustomTransition(12f).addTarget(R.id.card_image))
+            addTransition(ChangeBounds().addTarget(R.id.card_image))
+            addTransition(ChangeTransform().addTarget(R.id.card_image))
+            addTransition(ChangeClipBounds().addTarget(R.id.card_image))
+            addTransition(ChangeImageTransform().addTarget(R.id.card_image))
         }
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
@@ -92,7 +96,11 @@ class CardActivity : AppCompatActivity(),
                 .inflateTransition(R.transition.transition_card_exit)
         window.sharedElementExitTransition = TransitionSet().apply {
             ordering = TransitionSet.ORDERING_TOGETHER
-            addTransition(CustomTransition(0f).addTarget(R.id.card_image))
+            //addTransition(CustomTransition(0f).addTarget(R.id.card_image))
+            addTransition(ChangeBounds().addTarget(R.id.card_image))
+            addTransition(ChangeTransform().addTarget(R.id.card_image))
+            addTransition(ChangeClipBounds().addTarget(R.id.card_image))
+            addTransition(ChangeImageTransform().addTarget(R.id.card_image))
         }
 
         setExitSharedElementCallback(object : SharedElementCallback() {

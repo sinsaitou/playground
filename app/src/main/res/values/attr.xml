@@ -11,6 +11,12 @@
 
     <declare-styleable name="CircleRectView">
         <attr name="circleRadius" format="dimension"/>
+        <attr name="circleRadiusTopLeft" format="dimension" />
+        <attr name="circleRadiusTopRight" format="dimension" />
+        <attr name="circleRadiusBottomLeft" format="dimension" />
+        <attr name="circleRadiusBottomRight" format="dimension" />
+        <attr name="circleIsSquared" format="boolean" />
+        <attr name="isOval" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CoverView">
